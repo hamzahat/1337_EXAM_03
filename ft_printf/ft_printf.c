@@ -1,55 +1,58 @@
-#include <unistd.h> // write
-#include <stdarg.h> // va_start, va_arg, va_end
+#include <stdarg.h>
+#include <unistd.h>
 
-//? putstr
-int	ft_putstr(char *s)
+//? ft_putchar
+int	ft_put_char(char c)
 {
-	int len = 0;
-	if (!s)
-		s = "(null)";
-	while (s[len])
-		write(1, &s[len++], 1);
-	return (len);
+	return(write(1, &c, 1));
 }
 
-//? putnbr
-int	ft_putnbr(int n)
+//? ft_putstr
+int ft_put_str(char *str)
 {
-	long nb = n;
 	int count = 0;
-	char c;
-
-	if (nb < 0)
-	{
-		write(1, "-", 1);
-		count++;
-		nb = -nb;
-	}
-	if (nb > 9)
-		count += ft_putnbr(nb / 10);
-	c = '0' + (nb % 10);
-	write(1, &c, 1);
-	return (count + 1);
+	if (!str)
+		str = "(null)";
+	while (str[count])
+		ft_put_char(str[count++]);
+	return (count);
 }
 
-//? put_hexa
-int	ft_puthex(unsigned int n)
+//? ft_putnbr
+int ft_put_nbr(int nb)
+{
+	long num = nb;
+	int count = 0;
+
+	if (num < 0)
+	{
+		count += ft_put_char('-');
+		num = -num;
+	}
+	if (num > 9)
+		count += ft_put_nbr(num / 10);
+	count += ft_put_char((num % 10) + 48);
+	return (count);
+}
+
+//? ft_puthex
+int ft_put_hex(unsigned int nb)
 {
 	char *hex = "0123456789abcdef";
 	int count = 0;
 
-	if (n >= 16)
-		count += ft_puthex(n / 16);
-	write(1, &hex[n % 16], 1);
-	return (count + 1);
+	if (nb > 15)
+		count += ft_put_hexa(nb / 16);
+	count += ft_put_char(hex[nb % 16]);
+	return (count);
 }
 
 //? ft_printf
 int	ft_printf(const char *format, ...)
 {
-	va_list	args;
-	int	i = 0;
-	int	count = 0;
+	va_list args;
+	int i = 0;
+	int count = 0;
 
 	va_start(args, format);
 	while (format[i])
@@ -58,19 +61,21 @@ int	ft_printf(const char *format, ...)
 		{
 			i++;
 			if (format[i] == 's')
-				count += ft_putstr(va_arg(args, char *));
+				count += ft_put_str(va_arg(args, char *));
 			else if (format[i] == 'd')
-				count += ft_putnbr(va_arg(args, int));
+				count += ft_put_nbr(va_arg(args, int));
 			else if (format[i] == 'x')
-				count += ft_puthex(va_arg(args, unsigned int));
+				count += ft_put_hex(va_arg(args, unsigned int));
 		}
 		else
-			count += write(1, &format[i], 1);
+			count += ft_put_char(format[i]);
 		i++;
 	}
 	va_end(args);
 	return (count);
 }
+
+//* -------------------------------------
 
 //? test main:
 #include <stdio.h>
@@ -90,5 +95,3 @@ int	main (void)
 
 	return 0;
 }
-
-//! pased in grademe tests
