@@ -1,7 +1,7 @@
-#include <unistd.h>
-#include <stdarg.h>
-#include <stdlib.h>
+#include <unistd.h> // write
+#include <stdarg.h> // va_start, va_arg, va_end
 
+//? putstr
 int	ft_putstr(char *s)
 {
 	int len = 0;
@@ -12,6 +12,7 @@ int	ft_putstr(char *s)
 	return (len);
 }
 
+//? putnbr
 int	ft_putnbr(int n)
 {
 	long nb = n;
@@ -31,6 +32,7 @@ int	ft_putnbr(int n)
 	return (count + 1);
 }
 
+//? put_hexa
 int	ft_puthex(unsigned int n)
 {
 	char *hex = "0123456789abcdef";
@@ -42,10 +44,12 @@ int	ft_puthex(unsigned int n)
 	return (count + 1);
 }
 
+//? ft_printf
 int	ft_printf(const char *format, ...)
 {
-	va_list args;
-	int i = 0, count = 0;
+	va_list	args;
+	int	i = 0;
+	int	count = 0;
 
 	va_start(args, format);
 	while (format[i])
@@ -66,6 +70,25 @@ int	ft_printf(const char *format, ...)
 	}
 	va_end(args);
 	return (count);
+}
+
+//? test main:
+#include <stdio.h>
+int	main (void)
+{
+	printf("Hello %s\n", "toto");	// origine
+	ft_printf("Hello %s\n", "toto");// copy
+//!out:Hello toto$
+
+	printf("Magic %s is %d\n", "number", 42);	//origine
+	ft_printf("Magic %s is %d\n", "number", 42);// copy
+//!out:Magic number is 42%
+
+	printf("Hexadecimal for %d is %x\n", 42, 42);	//origine
+	ft_printf("Hexadecimal for %d is %x\n", 42, 42);//copy
+//! out:Hexadecimal for 42 is 2a$
+
+	return 0;
 }
 
 //! pased in grademe tests
