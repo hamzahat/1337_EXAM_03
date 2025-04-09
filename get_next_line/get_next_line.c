@@ -1,21 +1,3 @@
-// #include <stdlib.h> // malloc | free 
-// #include <unistd.h> // read fun
-//
-// char	*get_next_line(int fd)
-// {
-// 	return ();
-// }
-//
-
-
-// #include <stdlib.h> // malloc | free
-// #include <unistd.h> // read
-
-// char	*get_next_line(int fd)
-// {
-	
-// }
-
 #include <stdlib.h>
 #include <unistd.h>
 
